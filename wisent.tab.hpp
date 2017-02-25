@@ -45,28 +45,29 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    TOKEN_IDENTIFIER = 258,
-    TOKEN_DOUBLE = 259,
-    TOKEN_TRUE = 260,
-    TOKEN_FALSE = 261,
-    TOKEN_INTEGER = 262,
-    TOKEN_EQUALITY = 263,
-    TOKEN_NOT_EQUALITY = 264,
-    TOKEN_LESS_THAN = 265,
-    TOKEN_LESS_THAN_EQUAL_TO = 266,
-    TOKEN_GREATER_THAN = 267,
-    TOKEN_GREATER_THAN_EQUAL_TO = 268,
-    TOKEN_EQUAL = 269,
-    TOKEN_LEFT_BRACKET = 270,
-    TOKEN_RIGHT_BRACKET = 271,
-    TOKEN_LEFT_BRACE = 272,
-    TOKEN_RIGHT_BRACE = 273,
-    TOKEN_COMMA = 274,
-    TOKEN_DOT = 275,
-    TOKEN_ADD = 276,
-    TOKEN_MINUS = 277,
-    TOKEN_MULTIPLY = 278,
-    TOKEN_DIVIDE = 279
+    TOKEN_INTEGER = 258,
+    TOKEN_IDENTIFIER = 259,
+    TOKEN_DOUBLE = 260,
+    TOKEN_TRUE = 261,
+    TOKEN_FALSE = 262,
+    TOKEN_STRING = 263,
+    TOKEN_EQUALITY = 264,
+    TOKEN_NOT_EQUALITY = 265,
+    TOKEN_LESS_THAN = 266,
+    TOKEN_LESS_THAN_EQUAL_TO = 267,
+    TOKEN_GREATER_THAN = 268,
+    TOKEN_GREATER_THAN_EQUAL_TO = 269,
+    TOKEN_EQUAL = 270,
+    TOKEN_LEFT_BRACKET = 271,
+    TOKEN_RIGHT_BRACKET = 272,
+    TOKEN_LEFT_BRACE = 273,
+    TOKEN_RIGHT_BRACE = 274,
+    TOKEN_COMMA = 275,
+    TOKEN_DOT = 276,
+    TOKEN_ADD = 277,
+    TOKEN_MINUS = 278,
+    TOKEN_MULTIPLY = 279,
+    TOKEN_DIVIDE = 280
   };
 #endif
 
@@ -79,8 +80,9 @@ union YYSTYPE
 
   std::string *string;
   int token;
+  int integer;
 
-#line 84 "wisent.tab.hpp" /* yacc.c:1909  */
+#line 86 "wisent.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

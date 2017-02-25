@@ -111,28 +111,29 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    TOKEN_IDENTIFIER = 258,
-    TOKEN_DOUBLE = 259,
-    TOKEN_TRUE = 260,
-    TOKEN_FALSE = 261,
-    TOKEN_INTEGER = 262,
-    TOKEN_EQUALITY = 263,
-    TOKEN_NOT_EQUALITY = 264,
-    TOKEN_LESS_THAN = 265,
-    TOKEN_LESS_THAN_EQUAL_TO = 266,
-    TOKEN_GREATER_THAN = 267,
-    TOKEN_GREATER_THAN_EQUAL_TO = 268,
-    TOKEN_EQUAL = 269,
-    TOKEN_LEFT_BRACKET = 270,
-    TOKEN_RIGHT_BRACKET = 271,
-    TOKEN_LEFT_BRACE = 272,
-    TOKEN_RIGHT_BRACE = 273,
-    TOKEN_COMMA = 274,
-    TOKEN_DOT = 275,
-    TOKEN_ADD = 276,
-    TOKEN_MINUS = 277,
-    TOKEN_MULTIPLY = 278,
-    TOKEN_DIVIDE = 279
+    TOKEN_INTEGER = 258,
+    TOKEN_IDENTIFIER = 259,
+    TOKEN_DOUBLE = 260,
+    TOKEN_TRUE = 261,
+    TOKEN_FALSE = 262,
+    TOKEN_STRING = 263,
+    TOKEN_EQUALITY = 264,
+    TOKEN_NOT_EQUALITY = 265,
+    TOKEN_LESS_THAN = 266,
+    TOKEN_LESS_THAN_EQUAL_TO = 267,
+    TOKEN_GREATER_THAN = 268,
+    TOKEN_GREATER_THAN_EQUAL_TO = 269,
+    TOKEN_EQUAL = 270,
+    TOKEN_LEFT_BRACKET = 271,
+    TOKEN_RIGHT_BRACKET = 272,
+    TOKEN_LEFT_BRACE = 273,
+    TOKEN_RIGHT_BRACE = 274,
+    TOKEN_COMMA = 275,
+    TOKEN_DOT = 276,
+    TOKEN_ADD = 277,
+    TOKEN_MINUS = 278,
+    TOKEN_MULTIPLY = 279,
+    TOKEN_DIVIDE = 280
   };
 #endif
 
@@ -145,8 +146,9 @@ union YYSTYPE
 
   std::string *string;
   int token;
+  int integer;
 
-#line 150 "wisent.tab.cpp" /* yacc.c:355  */
+#line 152 "wisent.tab.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -163,7 +165,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 167 "wisent.tab.cpp" /* yacc.c:358  */
+#line 169 "wisent.tab.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -403,23 +405,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  5
+#define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   7
+#define YYLAST   14
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  25
+#define YYNTOKENS  26
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  7
+#define YYNRULES  11
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  9
+#define YYNSTATES  13
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   279
+#define YYMAXUTOK   280
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -455,14 +457,16 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    39,    39,    40,    41,    42,    43,    44
+       0,    41,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50
 };
 #endif
 
@@ -471,13 +475,14 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "TOKEN_IDENTIFIER", "TOKEN_DOUBLE",
-  "TOKEN_TRUE", "TOKEN_FALSE", "TOKEN_INTEGER", "TOKEN_EQUALITY",
-  "TOKEN_NOT_EQUALITY", "TOKEN_LESS_THAN", "TOKEN_LESS_THAN_EQUAL_TO",
-  "TOKEN_GREATER_THAN", "TOKEN_GREATER_THAN_EQUAL_TO", "TOKEN_EQUAL",
-  "TOKEN_LEFT_BRACKET", "TOKEN_RIGHT_BRACKET", "TOKEN_LEFT_BRACE",
-  "TOKEN_RIGHT_BRACE", "TOKEN_COMMA", "TOKEN_DOT", "TOKEN_ADD",
-  "TOKEN_MINUS", "TOKEN_MULTIPLY", "TOKEN_DIVIDE", "$accept", "wisent", YY_NULLPTR
+  "$end", "error", "$undefined", "TOKEN_INTEGER", "TOKEN_IDENTIFIER",
+  "TOKEN_DOUBLE", "TOKEN_TRUE", "TOKEN_FALSE", "TOKEN_STRING",
+  "TOKEN_EQUALITY", "TOKEN_NOT_EQUALITY", "TOKEN_LESS_THAN",
+  "TOKEN_LESS_THAN_EQUAL_TO", "TOKEN_GREATER_THAN",
+  "TOKEN_GREATER_THAN_EQUAL_TO", "TOKEN_EQUAL", "TOKEN_LEFT_BRACKET",
+  "TOKEN_RIGHT_BRACKET", "TOKEN_LEFT_BRACE", "TOKEN_RIGHT_BRACE",
+  "TOKEN_COMMA", "TOKEN_DOT", "TOKEN_ADD", "TOKEN_MINUS", "TOKEN_MULTIPLY",
+  "TOKEN_DIVIDE", "$accept", "wisent", YY_NULLPTR
 };
 #endif
 
@@ -488,14 +493,14 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279
+     275,   276,   277,   278,   279,   280
 };
 # endif
 
-#define YYPACT_NINF -3
+#define YYPACT_NINF -1
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-3)))
+  (!!((Yystate) == (-1)))
 
 #define YYTABLE_NINF -1
 
@@ -506,7 +511,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,    -3,    -3,    -3,     0,    -3,    -3,    -3,    -3
+       6,    -1,    -1,    -1,    -1,    -1,     0,    -1,    -1,    -1,
+      -1,    -1,    -1
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -514,19 +520,20 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     7,     6,     5,     0,     1,     4,     3,     2
+       0,     7,     9,     8,    10,    11,     0,     1,     2,     4,
+       3,     5,     6
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -3,    -3
+      -1,    -1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     4
+      -1,     6
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -534,31 +541,36 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       5,     1,     2,     6,     7,     3,     0,     8
+       7,     0,     0,     8,     9,    10,    11,     0,    12,     1,
+       2,     3,     4,     0,     5
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     3,     4,     3,     4,     7,    -1,     7
+       0,    -1,    -1,     3,     4,     5,     6,    -1,     8,     3,
+       4,     5,     6,    -1,     8
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     7,    26,     0,     3,     4,     7
+       0,     3,     4,     5,     6,     8,    27,     0,     3,     4,
+       5,     6,     8
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    25,    26,    26,    26,    26,    26,    26
+       0,    26,    27,    27,    27,    27,    27,    27,    27,    27,
+      27,    27
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     2,     1,     1,     1
+       0,     2,     2,     2,     2,     2,     2,     1,     1,     1,
+       1,     1
 };
 
 
@@ -1235,43 +1247,67 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 39 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found an integer: " << (yyvsp[0].token) << endl; }
-#line 1241 "wisent.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 3:
-#line 40 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found a double: " << (yyvsp[0].string) << endl; }
-#line 1247 "wisent.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 4:
 #line 41 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found a string: " << (yyvsp[0].string) << endl; }
+    { cout << "Bison found an integer: " << (yyvsp[0].integer) << endl; }
 #line 1253 "wisent.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 5:
+  case 3:
 #line 42 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found an integer: " << (yyvsp[0].token) << endl; }
+    { cout << "Bison found a double: " << *(yyvsp[0].string) << endl; }
 #line 1259 "wisent.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 6:
+  case 4:
 #line 43 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found a double: " << (yyvsp[0].string) << endl; }
+    { cout << "Bison found an identifier: " << *(yyvsp[0].string) << endl; }
 #line 1265 "wisent.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 7:
+  case 5:
 #line 44 "wisent.y" /* yacc.c:1646  */
-    { cout << "Bison found a string: " << (yyvsp[0].string) << endl; }
+    { cout << "Bison found a boolean: " << *(yyvsp[0].string) << endl; }
 #line 1271 "wisent.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 6:
+#line 45 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found a string: " << *(yyvsp[0].string) << endl; }
+#line 1277 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
 
-#line 1275 "wisent.tab.cpp" /* yacc.c:1646  */
+  case 7:
+#line 46 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found an integer: " << (yyvsp[0].integer) << endl; }
+#line 1283 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 47 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found a double: " << *(yyvsp[0].string) << endl; }
+#line 1289 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 9:
+#line 48 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found an identifier: " << *(yyvsp[0].string) << endl; }
+#line 1295 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 49 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found a boolean: " << *(yyvsp[0].string) << endl; }
+#line 1301 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 50 "wisent.y" /* yacc.c:1646  */
+    { cout << "Bison found a string: " << *(yyvsp[0].string) << endl; }
+#line 1307 "wisent.tab.cpp" /* yacc.c:1646  */
+    break;
+
+
+#line 1311 "wisent.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1499,7 +1535,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 46 "wisent.y" /* yacc.c:1906  */
+#line 52 "wisent.y" /* yacc.c:1906  */
 
 
 int main(int, char**) {

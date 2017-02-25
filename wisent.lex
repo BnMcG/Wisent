@@ -10,11 +10,12 @@
 %}
 %%
 [ \t\n] ;
-[A-z]* yylval.string = new std::string(yytext, yyleng); return TOKEN_IDENTIFIER;
-[0-9]+\.[0-9]*  yylval.string = new std::string(yytext, yyleng); return TOKEN_DOUBLE;
-[0-9]+  yylval.string = new std::string(yytext, yyleng); return TOKEN_INTEGER;
+\"([A-z]+[0-9]*)+\" yylval.string = new std::string(yytext, yyleng); return TOKEN_STRING;
 "true"  yylval.string = new std::string(yytext, yyleng); return TOKEN_TRUE;
 "false" yylval.string = new std::string(yytext, yyleng); return TOKEN_FALSE;
+[A-z]* yylval.string = new std::string(yytext, yyleng); return TOKEN_IDENTIFIER;
+[0-9]+\.[0-9]*  yylval.string = new std::string(yytext, yyleng); return TOKEN_DOUBLE;
+[0-9]+  yylval.integer = atoi(yytext); return TOKEN_INTEGER;
 "=" return TOKEN(TOKEN_EQUAL);
 "=="  return TOKEN(TOKEN_EQUALITY);
 "!="  return TOKEN(TOKEN_NOT_EQUALITY);

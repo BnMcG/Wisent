@@ -19,14 +19,16 @@
 %union {
   std::string *string;
   int token;
+  int integer;
 }
 
 // Define terminal symbols and associate each
 // terminal symbol with a field from the
 // union of types. Each terminal symbol
 // represents a type
-%token <string> TOKEN_IDENTIFIER TOKEN_DOUBLE TOKEN_TRUE TOKEN_FALSE
-%token <token> TOKEN_INTEGER
+
+%token <integer> TOKEN_INTEGER
+%token <string> TOKEN_IDENTIFIER TOKEN_DOUBLE TOKEN_TRUE TOKEN_FALSE TOKEN_STRING
 %token <token> TOKEN_EQUALITY TOKEN_NOT_EQUALITY TOKEN_LESS_THAN TOKEN_LESS_THAN_EQUAL_TO TOKEN_GREATER_THAN TOKEN_GREATER_THAN_EQUAL_TO TOKEN_EQUAL
 %token <token> TOKEN_LEFT_BRACKET TOKEN_RIGHT_BRACKET TOKEN_LEFT_BRACE TOKEN_RIGHT_BRACE TOKEN_COMMA TOKEN_DOT
 %token <token> TOKEN_ADD TOKEN_MINUS TOKEN_MULTIPLY TOKEN_DIVIDE
@@ -37,11 +39,15 @@
 %%
 wisent:
   wisent TOKEN_INTEGER { cout << "Bison found an integer: " << $2 << endl; }
-  | wisent TOKEN_DOUBLE { cout << "Bison found a double: " << $2 << endl; }
-  | wisent TOKEN_IDENTIFIER { cout << "Bison found a string: " << $2 << endl; }
+  | wisent TOKEN_DOUBLE { cout << "Bison found a double: " << *$2 << endl; }
+  | wisent TOKEN_IDENTIFIER { cout << "Bison found an identifier: " << *$2 << endl; }
+  | wisent TOKEN_TRUE { cout << "Bison found a boolean: " << *$2 << endl; }
+  | wisent TOKEN_STRING { cout << "Bison found a string: " << *$2 << endl; }
   | TOKEN_INTEGER { cout << "Bison found an integer: " << $1 << endl; }
-  | TOKEN_DOUBLE { cout << "Bison found a double: " << $1 << endl; }
-  | TOKEN_IDENTIFIER { cout << "Bison found a string: " << $1 << endl; }
+  | TOKEN_DOUBLE { cout << "Bison found a double: " << *$1 << endl; }
+  | TOKEN_IDENTIFIER { cout << "Bison found an identifier: " << *$1 << endl; }
+  | TOKEN_TRUE { cout << "Bison found a boolean: " << *$1 << endl; }
+  | TOKEN_STRING { cout << "Bison found a string: " << *$1 << endl; }
   ;
 %%
 
