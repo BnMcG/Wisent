@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/wisent.dir/ast.cpp.o CMakeFiles/wisent.dir/wisent.tab.cpp.o CMakeFiles/wisent.dir/wisent.yy.cpp.o  -o wisent 

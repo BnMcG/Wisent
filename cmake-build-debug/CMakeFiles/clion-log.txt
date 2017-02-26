@@ -1,4 +1,0 @@
-/home/norbit/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/163.13906.4/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/norbit/wisent
--- Configuring done
--- Generating done
--- Build files have been written to: /home/norbit/wisent/cmake-build-debug
