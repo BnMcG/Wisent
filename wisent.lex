@@ -25,7 +25,7 @@
 ">="  return TOKEN(TOKEN_GREATER_THAN_EQUAL_TO);
 "(" return TOKEN(TOKEN_LEFT_BRACKET);
 ")" return TOKEN(TOKEN_RIGHT_BRACKET);
-"-> {"  return TOKEN(TOKEN_LEFT_BRACE);
+"{ ->"  return TOKEN(TOKEN_LEFT_BRACE);
 "<- }"  return TOKEN(TOKEN_RIGHT_BRACE);
 "," return TOKEN(TOKEN_COMMA);
 "." return TOKEN(TOKEN_DOT);

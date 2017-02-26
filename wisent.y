@@ -34,7 +34,7 @@
 %token <token> TOKEN_LEFT_BRACKET TOKEN_RIGHT_BRACKET TOKEN_LEFT_BRACE TOKEN_RIGHT_BRACE TOKEN_COMMA TOKEN_DOT
 %token <token> TOKEN_ADD TOKEN_MINUS TOKEN_MULTIPLY TOKEN_DIVIDE TOKEN_SEMICOLON
 
-%type <dval> types
+%type <dval> expression
 
 %%
 
@@ -45,15 +45,15 @@ input:
 
 line:
   TOKEN_SEMICOLON
-  | types TOKEN_SEMICOLON { cout << "Statement evaluated: " << $1 << endl; }
+  | expression TOKEN_SEMICOLON { cout << "Statement evaluated: " << $1 << endl; }
+  | TOKEN_LEFT_BRACE expression TOKEN_SEMICOLON TOKEN_RIGHT_BRACE { cout << "Statement evaluated: " << $2 << endl; }
 ;
 
-types:
+expression:
   TOKEN_INTEGER { $$ = $1; }
   | TOKEN_DOUBLE { $$ = $1; }
-  | types TOKEN_INTEGER { $$ = $1; }
-  | types TOKEN_DOUBLE { $$ = $1; }
-  | types TOKEN_ADD types { $$ = $1 + $3; }
+  | expression TOKEN_ADD expression { $$ = $1 + $3; }
+  | TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET { $$ = $2; }
   ;
 %%
 
