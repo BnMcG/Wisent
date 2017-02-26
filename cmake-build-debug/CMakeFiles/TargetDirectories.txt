@@ -1,0 +1,3 @@
+/home/norbit/wisent/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/norbit/wisent/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/norbit/wisent/cmake-build-debug/CMakeFiles/wisent.dir

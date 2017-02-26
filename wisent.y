@@ -1,7 +1,25 @@
 %{
-  #include <cstdio>
+  #include "llvm/ADT/APFloat.h"
+  #include "llvm/ADT/STLExtras.h"
+  #include "llvm/IR/BasicBlock.h"
+  #include "llvm/IR/Constants.h"
+  #include "llvm/IR/DerivedTypes.h"
+  #include "llvm/IR/Function.h"
+  #include "llvm/IR/IRBuilder.h"
+  #include "llvm/IR/LLVMContext.h"
+  #include "llvm/IR/Module.h"
+  #include "llvm/IR/Type.h"
+  #include "llvm/IR/Constant.h"
+  #include "llvm/IR/Verifier.h"
+  #include "ast.hpp"
   #include <iostream>
-  using namespace std;
+
+  using namespace llvm;
+
+  static LLVMContext TheContext;
+  static IRBuilder<> Builder(TheContext);
+  static std::unique_ptr<Module> TheModule;
+  static std::map<std::string, Value *> NamedValues;
 
   // Flex components that Bison needs to know about
   // "I gots to know!"
@@ -35,26 +53,40 @@
 %token <token> TOKEN_ADD TOKEN_MINUS TOKEN_MULTIPLY TOKEN_DIVIDE TOKEN_SEMICOLON
 
 %type <dval> expression
-
+%left TOKEN_ADD
 %%
 
-input:
+program:
+  block
+  | program block;
 
+block:
+  TOKEN_IDENTIFIER
+  | TOKEN_IDENTIFIER TOKEN_LEFT_BRACE input TOKEN_RIGHT_BRACE
+  ;
+
+input:
   | input line
 ;
 
 line:
   TOKEN_SEMICOLON
-  | expression TOKEN_SEMICOLON { cout << "Statement evaluated: " << $1 << endl; }
-  | TOKEN_LEFT_BRACE expression TOKEN_SEMICOLON TOKEN_RIGHT_BRACE { cout << "Statement evaluated: " << $2 << endl; }
+  | variables TOKEN_SEMICOLON;
+  | expression TOKEN_SEMICOLON { std::cout << "Statement evaluated: " << $1 << std::endl; }
+  | TOKEN_LEFT_BRACE expression TOKEN_SEMICOLON TOKEN_RIGHT_BRACE { std::cout << "Statement evaluated: " << $2 << std::endl; }
 ;
 
 expression:
-  TOKEN_INTEGER { $$ = $1; }
-  | TOKEN_DOUBLE { $$ = $1; }
+  TOKEN_INTEGER { $$ = $1; new NumericLiteralAST($$); }
+  | TOKEN_DOUBLE { $$ = $1; new NumericLiteralAST($$); }
   | expression TOKEN_ADD expression { $$ = $1 + $3; }
   | TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET { $$ = $2; }
-  ;
+;
+
+variables:
+  TOKEN_IDENTIFIER TOKEN_EQUAL TOKEN_INTEGER {new VariableDeclarationAST(NamedValues, *$1, $3); }
+  | TOKEN_IDENTIFIER TOKEN_EQUAL TOKEN_DOUBLE { new VariableDeclarationAST(NamedValues, *$1, $3); }
+;
 %%
 
 int main(int, char**) {
@@ -62,7 +94,7 @@ int main(int, char**) {
   // Load a file
   FILE *sourceCode = fopen("source.w", "r");
   if(!sourceCode) {
-    cout << "Cannot read source file! D'oh!";
+    std::cout << "Cannot read source file! D'oh!";
     return -1;
   }
 
@@ -75,7 +107,7 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
-  cout << "Oh noes! A wild parsing error has appeared: " << s << endl;
+  std::cout << "Oh noes! A wild parsing error has appeared: " << s << std::endl;
   // Cut our losses and exit after the error
   exit(-1);
 }
