@@ -46,8 +46,8 @@ extern int yydebug;
   enum yytokentype
   {
     TOKEN_INTEGER = 258,
-    TOKEN_IDENTIFIER = 259,
-    TOKEN_DOUBLE = 260,
+    TOKEN_DOUBLE = 259,
+    TOKEN_IDENTIFIER = 260,
     TOKEN_TRUE = 261,
     TOKEN_FALSE = 262,
     TOKEN_STRING = 263,
@@ -67,7 +67,8 @@ extern int yydebug;
     TOKEN_ADD = 277,
     TOKEN_MINUS = 278,
     TOKEN_MULTIPLY = 279,
-    TOKEN_DIVIDE = 280
+    TOKEN_DIVIDE = 280,
+    TOKEN_SEMICOLON = 281
   };
 #endif
 
@@ -76,13 +77,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "wisent.y" /* yacc.c:1909  */
+#line 20 "wisent.y" /* yacc.c:1909  */
 
   std::string *string;
   int token;
-  int integer;
+  double dval;
 
-#line 86 "wisent.tab.hpp" /* yacc.c:1909  */
+#line 87 "wisent.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

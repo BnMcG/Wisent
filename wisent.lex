@@ -10,12 +10,12 @@
 %}
 %%
 [ \t\n] ;
-\"([A-z]+[0-9]*)+\" yylval.string = new std::string(yytext, yyleng); return TOKEN_STRING;
+\"([A-z]|[0-9])+\" yylval.string = new std::string(yytext, yyleng); return TOKEN_STRING;
 "true"  yylval.string = new std::string(yytext, yyleng); return TOKEN_TRUE;
 "false" yylval.string = new std::string(yytext, yyleng); return TOKEN_FALSE;
 [A-z]* yylval.string = new std::string(yytext, yyleng); return TOKEN_IDENTIFIER;
-[0-9]+\.[0-9]*  yylval.string = new std::string(yytext, yyleng); return TOKEN_DOUBLE;
-[0-9]+  yylval.integer = atoi(yytext); return TOKEN_INTEGER;
+[0-9]+\.[0-9]*  yylval.dval = atof(yytext); return TOKEN_DOUBLE;
+[0-9]+  yylval.dval = atoi(yytext); return TOKEN_INTEGER;
 "=" return TOKEN(TOKEN_EQUAL);
 "=="  return TOKEN(TOKEN_EQUALITY);
 "!="  return TOKEN(TOKEN_NOT_EQUALITY);
@@ -33,5 +33,6 @@
 "/" return TOKEN(TOKEN_DIVIDE);
 "-" return TOKEN(TOKEN_MINUS);
 "*" return TOKEN(TOKEN_MULTIPLY);
+";" return TOKEN(TOKEN_SEMICOLON);
 . printf("Oh darn it! An unrecognised token! I would've gotten away for it if it wasn't for those meddling characters!"); yyterminate();
 %%
