@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+
+# Files compiled by Flex/Bison
+wisent.yy.cpp
+wisent.tab.cpp
+wisent.tab.hpp
+wisent
