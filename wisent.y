@@ -1,25 +1,11 @@
 %{
-  #include "llvm/ADT/APFloat.h"
-  #include "llvm/ADT/STLExtras.h"
-  #include "llvm/IR/BasicBlock.h"
-  #include "llvm/IR/Constants.h"
-  #include "llvm/IR/DerivedTypes.h"
-  #include "llvm/IR/Function.h"
-  #include "llvm/IR/IRBuilder.h"
-  #include "llvm/IR/LLVMContext.h"
-  #include "llvm/IR/Module.h"
-  #include "llvm/IR/Type.h"
-  #include "llvm/IR/Constant.h"
-  #include "llvm/IR/Verifier.h"
-  #include "ast.hpp"
   #include <iostream>
-
-  using namespace llvm;
-
-  static LLVMContext TheContext;
-  static IRBuilder<> Builder(TheContext);
-  static std::unique_ptr<Module> TheModule;
-  static std::map<std::string, Value *> NamedValues;
+  #include <stdio.h>
+  #include <vector>
+  #include <map>
+  #include <string>
+  #include <sstream>
+  #include <fstream>
 
   // Flex components that Bison needs to know about
   // "I gots to know!"
@@ -28,6 +14,9 @@
   extern "C" FILE *yyin;
 
   void yyerror(const char *s);
+
+  static std::vector<double> results;
+  static std::map<std::string, double> symbols;
 
 %}
 
@@ -53,12 +42,15 @@
 %token <token> TOKEN_ADD TOKEN_MINUS TOKEN_MULTIPLY TOKEN_DIVIDE TOKEN_SEMICOLON
 
 %type <dval> expression
-%left TOKEN_ADD
+%left TOKEN_MINUS TOKEN_ADD
+%left TOKEN_MULTIPLY TOKEN_DIVIDE
+%left NEG
 %%
 
 program:
   block
-  | program block;
+  | program block
+  ;
 
 block:
   TOKEN_IDENTIFIER
@@ -72,20 +64,24 @@ input:
 line:
   TOKEN_SEMICOLON
   | variables TOKEN_SEMICOLON;
-  | expression TOKEN_SEMICOLON { std::cout << "Statement evaluated: " << $1 << std::endl; }
-  | TOKEN_LEFT_BRACE expression TOKEN_SEMICOLON TOKEN_RIGHT_BRACE { std::cout << "Statement evaluated: " << $2 << std::endl; }
+  | expression TOKEN_SEMICOLON { }
+  | TOKEN_LEFT_BRACE expression TOKEN_SEMICOLON TOKEN_RIGHT_BRACE { }
 ;
 
 expression:
-  TOKEN_INTEGER { $$ = $1; new NumericLiteralAST($$); }
-  | TOKEN_DOUBLE { $$ = $1; new NumericLiteralAST($$); }
-  | expression TOKEN_ADD expression { $$ = $1 + $3; }
+  TOKEN_INTEGER { $$ = $1; }
+  | TOKEN_IDENTIFIER { $$ = symbols[*$1]; }
+  | TOKEN_DOUBLE { $$ = $1; }
+  | TOKEN_MINUS expression %prec NEG { $$ = -$2; }
+  | expression TOKEN_ADD expression { $$ = $1 + $3; results.push_back($1 + $3); }
+  | expression TOKEN_MINUS expression { $$ = $1 - $3; results.push_back($1 - $3); }
+  | expression TOKEN_MULTIPLY expression { $$ = $1 * $3; results.push_back($1 * $3); }
+  | expression TOKEN_DIVIDE expression { $$ = $1 / $3; results.push_back($1 / $3); }
   | TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET { $$ = $2; }
 ;
 
 variables:
-  TOKEN_IDENTIFIER TOKEN_EQUAL TOKEN_INTEGER {new VariableDeclarationAST(NamedValues, *$1, $3); }
-  | TOKEN_IDENTIFIER TOKEN_EQUAL TOKEN_DOUBLE { new VariableDeclarationAST(NamedValues, *$1, $3); }
+  TOKEN_IDENTIFIER TOKEN_EQUAL expression { symbols[*$1] = $3; }
 ;
 %%
 
@@ -104,6 +100,22 @@ int main(int, char**) {
   do {
     yyparse();
   } while(!feof(yyin));
+
+  std::cout << "C++ Output (out.cpp)" << std::endl << std::endl;
+  std::string cpp = "#include <iostream>\n\nint main() {\n\n";
+  for(double r : results) {
+    std::stringstream stream;
+    stream << "std::cout <<  " <<  r << " << std::endl; " << std::endl;
+    cpp += stream.str();
+  }
+
+  cpp += std::string("}");
+
+  std::cout << cpp << std::endl;
+
+  std::ofstream out("out.cpp");
+  out << cpp;
+  out.close();
 }
 
 void yyerror(const char *s) {
