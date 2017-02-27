@@ -1,0 +1,18 @@
+profit { ->
+	shoesPrice = 4.50;
+	socksPrice = 10;
+	trousersPrice = 7.50;
+	hatPrice = 2;
+	
+	transaction = shoesPrice + socksPrice + trousersPrice;
+<- }
+
+cost { ->
+	shoesCost = 2;
+	socksCost = 3;
+	trousersCost = 1;
+<- }
+
+net { ->
+	transaction - shoesCost - socksCost - trousersCost;
+<- }
